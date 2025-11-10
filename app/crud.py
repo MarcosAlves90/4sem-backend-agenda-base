@@ -11,7 +11,7 @@ def get_aluno(db: Session, aluno_id: int):
 
 
 def create_aluno(db: Session, aluno: schemas.AlunoCreate):
-    db_aluno = models.Aluno(**aluno.dict())
+    db_aluno = models.Aluno(**aluno.model_dump())
     db.add(db_aluno)
     db.commit()
     db.refresh(db_aluno)
@@ -23,7 +23,7 @@ def get_agendas(db: Session):
 
 
 def create_agenda(db: Session, agenda: schemas.AgendaCreate):
-    db_agenda = models.Agenda(**agenda.dict())
+    db_agenda = models.Agenda(**agenda.model_dump())
     db.add(db_agenda)
     db.commit()
     db.refresh(db_agenda)
@@ -38,7 +38,7 @@ def update_aluno(db: Session, aluno_id: int, aluno: schemas.AlunoCreate):
     db_aluno = db.query(models.Aluno).filter(models.Aluno.id == aluno_id).first()
     if not db_aluno:
         return None
-    for key, value in aluno.dict().items():
+    for key, value in aluno.model_dump().items():
         setattr(db_aluno, key, value)
     db.commit()
     db.refresh(db_aluno)
@@ -58,7 +58,7 @@ def update_agenda(db: Session, agenda_id: int, agenda: schemas.AgendaCreate):
     db_agenda = db.query(models.Agenda).filter(models.Agenda.id == agenda_id).first()
     if not db_agenda:
         return None
-    for key, value in agenda.dict().items():
+    for key, value in agenda.model_dump().items():
         setattr(db_agenda, key, value)
     db.commit()
     db.refresh(db_agenda)
@@ -149,7 +149,7 @@ def get_professor(db: Session, professor_id: int):
 
 
 def create_professor(db: Session, professor: schemas.ProfessorCreate):
-    db_prof = models.Professor(**professor.dict())
+    db_prof = models.Professor(**professor.model_dump())
     db.add(db_prof)
     db.commit()
     db.refresh(db_prof)
@@ -160,7 +160,7 @@ def update_professor(db: Session, professor_id: int, professor: schemas.Professo
     db_prof = db.query(models.Professor).filter(models.Professor.id == professor_id).first()
     if not db_prof:
         return None
-    for key, value in professor.dict().items():
+    for key, value in professor.model_dump().items():
         setattr(db_prof, key, value)
     db.commit()
     db.refresh(db_prof)
@@ -185,7 +185,7 @@ def get_turma(db: Session, turma_id: int):
 
 
 def create_turma(db: Session, turma: schemas.TurmaCreate):
-    db_turma = models.Turma(**turma.dict())
+    db_turma = models.Turma(**turma.model_dump())
     db.add(db_turma)
     db.commit()
     db.refresh(db_turma)
@@ -196,7 +196,7 @@ def update_turma(db: Session, turma_id: int, turma: schemas.TurmaCreate):
     db_turma = db.query(models.Turma).filter(models.Turma.id == turma_id).first()
     if not db_turma:
         return None
-    for key, value in turma.dict().items():
+    for key, value in turma.model_dump().items():
         setattr(db_turma, key, value)
     db.commit()
     db.refresh(db_turma)
@@ -221,7 +221,7 @@ def get_disciplina(db: Session, disciplina_id: int):
 
 
 def create_disciplina(db: Session, disciplina: schemas.DisciplinaCreate):
-    db_disc = models.Disciplina(**disciplina.dict())
+    db_disc = models.Disciplina(**disciplina.model_dump())
     db.add(db_disc)
     db.commit()
     db.refresh(db_disc)
@@ -232,7 +232,7 @@ def update_disciplina(db: Session, disciplina_id: int, disciplina: schemas.Disci
     db_disc = db.query(models.Disciplina).filter(models.Disciplina.id == disciplina_id).first()
     if not db_disc:
         return None
-    for key, value in disciplina.dict().items():
+    for key, value in disciplina.model_dump().items():
         setattr(db_disc, key, value)
     db.commit()
     db.refresh(db_disc)
@@ -258,7 +258,7 @@ def get_matricula(db: Session, matricula_id: int):
 
 def create_matricula(db: Session, matricula: schemas.MatriculaCreate):
     # opcional: checar existência de aluno e turma
-    db_m = models.Matricula(**matricula.dict())
+    db_m = models.Matricula(**matricula.model_dump())
     db.add(db_m)
     db.commit()
     db.refresh(db_m)
