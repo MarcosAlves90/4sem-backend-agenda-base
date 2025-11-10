@@ -11,18 +11,26 @@ RUN apt-get update \
     && apt-get install -y --no-install-recommends build-essential libpq-dev gcc \
     && rm -rf /var/lib/apt/lists/*
 
-# Copia só requirements e instala dependências antes de copiar todo o projeto
-# para aproveitar cache do Docker
+# Copia só requirements para aproveitar cache do Docker
 COPY requirements.txt /app/requirements.txt
 
-RUN pip install --upgrade pip \
-    && pip install --no-cache-dir -r /app/requirements.txt
+# Cria uma virtualenv dedicada e instala as dependências nela.
+# Usar uma venv evita instalar pacotes no site-packages do sistema e é a
+# forma recomendada para evitar conflitos e avisos ao rodar pip como root.
+RUN python -m venv /opt/venv \
+    && /opt/venv/bin/pip install --upgrade pip \
+    && /opt/venv/bin/pip install --no-cache-dir -r /app/requirements.txt
+
+# Garante que a venv esteja no PATH para comandos em tempo de execução
+ENV PATH="/opt/venv/bin:$PATH"
 
 # Copia o código da aplicação
 COPY . /app
 
-# Executa como usuário não-root
-RUN useradd --create-home appuser && chown -R appuser /app
+# Cria e configura usuário não-root, e garante permissões sobre /app e a venv
+RUN useradd --create-home appuser \
+    && chown -R appuser:appuser /app /opt/venv
+
 USER appuser
 
 EXPOSE 8000
