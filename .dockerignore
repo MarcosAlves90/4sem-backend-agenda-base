@@ -1,0 +1,25 @@
+<!-- Python/Docker ignores -->
+
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.env
+venv/
+.venv/
+env/
+build/
+dist/
+*.egg-info
+
+<!-- VCS -->
+
+.git
+.gitignore
+
+<!-- Editor/temp -->
+
+*.swp
+*.swo
+Thumbs.db
+desktop.ini
